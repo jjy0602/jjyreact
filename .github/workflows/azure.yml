@@ -1,9 +1,13 @@
+# Docs for the Azure Web Apps Deploy action: https://go.microsoft.com/fwlink/?linkid=2134798
+# More GitHub Actions for Azure: https://go.microsoft.com/fwlink/?linkid=2135048
+
 name: jjyreact2
         
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 env:
   AZURE_WEBAPP_NAME: jjyreact2 # set this to your application's name
@@ -15,7 +19,7 @@ jobs:
     name: Build and Deploy
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@main
+    - uses: actions/checkout@v2
     - name: Use Node.js ${{ env.NODE_VERSION }}
       uses: actions/setup-node@v1
       with:
@@ -24,13 +28,18 @@ jobs:
       run: |
         # Build and test the project, then
         # deploy to Azure Web App.
+        # npm cache clean --force
         npm install
-        npm run build --if-present
-        npm run test --if-present
-      working-directory: my-app-path
+        npm run build:prod
+        # npm run test
+      env:
+        CI: false
+    - name: add process.json
+      run: |
+        echo '{ script: "serve", env: { PM2_SERVE_SPA: "true", PM2_SERVE_HOMEPAGE: "/index.html" } }' >> build/process.json
     - name: 'Deploy to Azure WebApp'
       uses: azure/webapps-deploy@v2
-      with: 
-        app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+      with:
+        app-name:  ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE  }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
