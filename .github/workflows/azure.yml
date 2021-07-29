@@ -1,4 +1,4 @@
-on: push
+on: [push]
 
 env:
   AZURE_WEBAPP_NAME: jjyreact2 # set this to your application's name
