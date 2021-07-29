@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/51dc9397-9316-430e-96db-6bc3db02244a/resourceGroups/RG_JJY/providers/Microsoft.Web/sites/jjyreact2",
+    "appService.deploySubpath": "."
+}
